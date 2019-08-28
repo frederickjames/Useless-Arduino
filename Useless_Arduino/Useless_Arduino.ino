@@ -1,8 +1,9 @@
 #include <Servo.h> 
+#include "flipper.h"
 
 //hiding position (flipper at rest)
 const int pos0 = 135; //DO NOT SET ABOVE 180
-//flipping position (where it actualtes the switch)
+//flipping position (where it actuates the switch)
 const int pos1 = 5;   //DO NOT SET BELOW 0
 //how much to move by each loop
 const int steps = 2;
@@ -36,8 +37,8 @@ if (switchState == LOW && moveType != 1) {
     wiggle(7,servoPOS+5);
     moveSpeed = 0;
     moveIt(moveType,servoPOS,moveSpeed,steps);
-    rando = round(random(0,10));
-    if (rando < 5) {
+    rando = round(random(0,100));
+    if (rando < 20) {
       likeButton(rando);
     }
   } else {
@@ -169,6 +170,8 @@ void wiggle(int wiggles,int center) {
 
 void dontEven() {
   //pasue during return
+  delay(1500);
+  rest(servoPOS);
 }
 
 void ImWatchingYou() {
