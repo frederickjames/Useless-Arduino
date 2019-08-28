@@ -1,9 +1,9 @@
 #include <Servo.h> 
 
 //hiding position
-const int pos0 = 145; //DO NOT SET ABOVE 180
+const int pos0 = 135; //DO NOT SET ABOVE 180
 //flipping position
-const int pos1 =0;   //DO NOT SET BELOW 0
+const int pos1 =5;   //DO NOT SET BELOW 0
 //how much to move by each loop
 const int steps = 2;
 
