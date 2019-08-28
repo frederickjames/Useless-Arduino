@@ -27,13 +27,15 @@ void setup() {
 
 void loop(){
 //Serial.println(flipper.getTarget());
-//switchState = digitalRead(10);
-//currentMillis = millis();
-/*
-if (switchState = LOW) {
-  flipper.flipOut(0);
-}*/
-flipper.setMove(25,5);
+switchState = digitalRead(10);
+currentMillis = millis();
+Serial.println(switchState);
+if (switchState == LOW) {
+  flipper.flipOut(50);
+}
+if (switchState == HIGH) {
+  flipper.rest(50);
+}
 
 flipper.moveIt();
 

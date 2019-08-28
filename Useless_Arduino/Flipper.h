@@ -15,6 +15,8 @@ class Flipper
     void setDelay(int delay);             //independantly change the speed
     void setMove(byte target,int delay);  //where am I going
 
+    byte getPos();                        //where am I?
+
     void justGo(byte b);
     void moveIt();
     
