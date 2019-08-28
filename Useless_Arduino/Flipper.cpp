@@ -5,28 +5,47 @@
 #include "Arduino.h"
 #include "Flipper.h"
 
-Flipper::Flipper(byte pin,byte rest, byte flipped)
+Flipper::Flipper(byte rest, byte flipped)
 {
-  Servo flipper;
-  _rest = rest;
-  _flipped = flipped;
-  _range = (rest - flipped);
-  flipper.attach(pin);
-  _target = rest;
+  _rest = constrain(rest,0,180);
+  _flipped = constrain(flipped,0,180);
+  _steps = 2;
+  _servo.write(_rest);
+  Serial.println(_rest);
+  Serial.println(_flipped);
 }
 
-void Flipper::rest() {
-  _target = _rest;
-  _flipper.write(100);
+void Flipper::setPin(byte pin) {
+  _servo.attach(pin);
 }
-void Flipper::flip() {
-  _target = _flipped;
+void Flipper::setDelay(int delay) {
+  _delay = delay;
+}
+void Flipper::setMove(byte target,int delay) {
+  _target = target;
+  _delay = delay;
 }
 
-byte Flipper::getTarget() {
-  return _target;
+void Flipper::justGo(byte pos) {
+  byte p = constrain(pos,_flipped,_rest);
+  _servo.write(p);
+}
+void Flipper::moveIt() {
+  byte angle = _servo.read();
+  if (angle != _target) {  //if not there yet
+      if (angle < _target) {
+        angle = (angle + _steps);
+      } else if (angle > _target) {
+        angle = (angle - _steps);
+      }
+      delay(delay);
+      _servo.write(angle);
+  }  
 }
 
-void Flipper::moveIt(byte p) {
-  _flipper.write(p);
+void Flipper::flipOut(int delay) {
+  setMove(_flipped,delay);
+}
+void Flipper::rest(int delay) {
+  setMove(_rest,delay);
 }

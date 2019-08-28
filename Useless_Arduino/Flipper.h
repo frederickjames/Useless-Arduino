@@ -10,20 +10,25 @@
 class Flipper
 {
   public:
-    Flipper(byte pin,byte rest, byte flipped);
-    void moveIt(byte p);                       //Just go to that position
-    void moveIt(byte pos, int stepDelay);            //Wait, then go to that position
-    void moveIt(byte pos, int stepDelay, byte steps);
-    void flip();  //go to flipped (sets target to flipped)
-    void rest();  //go to rest (sets target to rest)
-    byte getTarget();
-    int currentPos();
+    Flipper(byte rest, byte flipped);
+    void setPin(byte pin);
+    void setDelay(int delay);             //independantly change the speed
+    void setMove(byte target,int delay);  //where am I going
+
+    void justGo(byte b);
+    void moveIt();
+    
+    void flipOut(int delay);
+    void rest(int delay);
   private:
-    byte _rest;
-    byte _flipped;
-    byte _range;
-    byte _target;
-    Servo _flipper;
+    byte _rest;                       //position when hiding
+    byte _flipped;                    //position for flipping the switch
+    byte _position;                   //where I am
+    byte _target;                     //this is where I'm going next
+    int _delay;                       //hoe long I wait between moves
+    byte _steps;                      //how much I move each time
+    bool _havingFun;                  //doing the fun stuff
+    Servo _servo;                     //this is what I control
 };
 
 #endif
