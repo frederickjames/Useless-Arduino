@@ -1,5 +1,5 @@
 #include <Servo.h> 
-#include "flipper.h"
+#include "Flipper.h"
 
 //hiding position (flipper at rest)
 const int pos0 = 135; //DO NOT SET ABOVE 180
@@ -8,7 +8,8 @@ const int pos1 = 5;   //DO NOT SET BELOW 0
 //how much to move by each loop
 const int steps = 2;
 
-Servo flipper;                    //does not move faster than lightning :(
+
+Flipper flipper(9,pos0,pos1);     //does not move faster than lightning :(
 byte switchState;                 //If the switch on or off?
 int servoPOS;                     //this is the servos current position
 int moveSpeed;                    //used to set a delay between move steps (lower is faster)
@@ -18,66 +19,18 @@ unsigned long lastFlip = 0;       //the last time the switch was flipped (used t
 int rando;                        //using this guy a lot so might as well initialize it once.
 
 
-void setup() { 
-  flipper.attach(9); 
+void setup() {
   pinMode(10, INPUT); 
   digitalWrite(10, HIGH); 
-  flipper.write(pos0);
-//  Serial.begin(9600);           //only do this if you're looking for bugs.
+  flipper.rest();
+//Serial.begin(9600);           //only do this if you're looking for bugs.
 } 
 
-void loop(){ 
+void loop(){
+//Serial.println(flipper.getTarget());
 switchState = digitalRead(10);
-servoPOS = flipper.read();
 currentMillis = millis();
 
-//low, not flipping - get flipping
-if (switchState == LOW && moveType != 1) {
-  if (servoPOS <= (pos1+pos0)/2) {  //move a little bit away from the switch before hitting it
-    wiggle(7,servoPOS+5);
-    moveSpeed = 0;
-    moveIt(moveType,servoPOS,moveSpeed,steps);
-    rando = round(random(0,100));
-    if (rando < 20) {
-      likeButton(rando);
-    }
-  } else {
-    delay(300);     //a little pause to make it look like I'm thinking about it
-    moveType = 1;
-    moveSpeed = setDelay(round(random(10,100)));
-    moveIt(moveType,servoPOS,moveSpeed,steps);
-  }
-}
-
-//low, flipping - keep flipping
-if(switchState == LOW && moveType == 1 && servoPOS > pos1)  {
-  moveIt(moveType,servoPOS,moveSpeed,steps);
-}
-
-//high, not moving or resetting - reset if needed
-if (switchState == HIGH && moveType != 0) {
-  delay(300);     //hey, watcha doing wo my switch?
-  moveType = 0;
-  moveSpeed = setDelay(round(random(0,100)));
-  moveIt(moveType,servoPOS,moveSpeed,steps);
-  lastFlip = currentMillis;
-}
-//high, resetting - keep going
-if(switchState == HIGH && moveType == 0 && servoPOS < pos0)  {
-  moveIt(moveType,servoPOS,moveSpeed,steps);
-}
-
-//Sitting at rest, let's haave some fun
-if (servoPOS = pos0 && (currentMillis - lastFlip) >= 6000 && lastFlip > 0) {
-  rando = round(random(0,100));
-  if (rando <20) {
-    peekOut();
-    lastFlip = currentMillis;
-  } else if (rando >= 20 && rando <30) {
-    wiggle(7,(pos0-pos1)/2);
-    lastFlip = currentMillis;
-  }
-}
 
 
 } //end loop()
@@ -92,10 +45,10 @@ void moveIt(byte dir,int loc, int sp, int st) {
     delay(sp);
   }
   if (dir == 0) { //moving to rest
-    flipper.write(min((loc+st),pos0)); //don't go past pos0
+    //flipper.write(min((loc+st),pos0)); //don't go past pos0
   }
   if (dir == 1) { //moving to flip
-    flipper.write(max((loc-10),pos1)); //don't go past pos-
+    //flipper.write(max((loc-10),pos1)); //don't go past pos-
   }
 }
 //a table for determining the speed based on random input
@@ -125,13 +78,13 @@ int setDelay(int r) {
 //offset is how many degrees away from the full flipping position
 void flipOut(int offset = 0) {
   //move directly to the smaller of the upper bound or the desired position
-  flipper.write(min(pos1+offset,pos0));
+  //flipper.write(min(pos1+offset,pos0));
 }
 //move the flipper to resting/hiding position
 //offset is how many degrees away from the full hiding position
 void rest(int offset = 0) {
   //move directly to the higher of the lower bound or the desired position
-  flipper.write(max(pos0-offset,pos1));
+  //flipper.write(max(pos0-offset,pos1));
 }
 
 /************************************************************************

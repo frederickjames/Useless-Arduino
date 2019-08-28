@@ -5,24 +5,25 @@
 #define Flipper_h
 
 #include "Arduino.h"
+#include <Servo.h>
 
 class Flipper
 {
   public:
-    Flipper(int pin,int rest, int flipped);
-    void moveIt(int pos);                       //Just go to that position
-    void moveIt(int pos, int delay);            //Wait, then go to that position
-    void moveIt(int pos, int delay, int steps)
-    void flip()
-    void rest()
-    void likeButton(int likes);
-    void peekOut();
-    void wiggle(int wiggles,int center);
-    void dontEven();
-    void ImWatchingYou();
+    Flipper(byte pin,byte rest, byte flipped);
+    void moveIt(byte p);                       //Just go to that position
+    void moveIt(byte pos, int stepDelay);            //Wait, then go to that position
+    void moveIt(byte pos, int stepDelay, byte steps);
+    void flip();  //go to flipped (sets target to flipped)
+    void rest();  //go to rest (sets target to rest)
+    byte getTarget();
+    int currentPos();
   private:
-    int _range;
-    int _pin;
+    byte _rest;
+    byte _flipped;
+    byte _range;
+    byte _target;
+    Servo _flipper;
 };
 
 #endif
