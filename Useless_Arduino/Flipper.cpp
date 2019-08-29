@@ -76,6 +76,8 @@ void Flipper::rest(int s) {
 
 void Flipper::moveIt() {
   _target = constrain(_target,_flipped,_rest);
+  Serial.println(_position);
+  Serial.println(_target);
   if (_position < _target) {
     _position += _steps;
     _position = constrain(_position,_flipped,_rest);
@@ -87,8 +89,31 @@ void Flipper::moveIt() {
     _servo.write(_position);
     //delay(0);
   }
+}/*
+void Flipper::moveIt(byte dir,int loc, int sp, int st) {
+  if (sp > 0) {
+    delay(sp);
+  }
+  if (dir == 0) { //moving to rest
+    flipper.write(min((loc+st),pos0)); //don't go past pos0
+  }
+  if (dir == 1) { //moving to flip
+    flipper.write(max((loc-10),pos1)); //don't go past pos-
+  }
 }
-
+/*
+void Flipper::moveIt(byte dir,int loc, int sp, int st) {
+  if (sp > 0) {
+    delay(sp);
+  }
+  if (dir == 0) { //moving to rest
+    flipper.write(min((loc+st),pos0)); //don't go past pos0
+  }
+  if (dir == 1) { //moving to flip
+    flipper.write(max((loc-10),pos1)); //don't go past pos-
+  }
+}
+*/
 /**************************************
  *   THE FUN STUFF
  **************************************/

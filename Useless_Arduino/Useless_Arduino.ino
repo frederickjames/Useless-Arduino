@@ -41,7 +41,7 @@ if (lastSwitchState != switchState) {
 }
 
 flipper.moveIt();
-flipper.dataDump();
+//flipper.dataDump();
 
 
 lastSwitchState = switchState;
@@ -63,7 +63,7 @@ int randomSpeed() {
   byte speeds[10] = {0,10,20,20,20,50,50,250,50,0};
 //  int speeds[10] = {1500,1500,1500,1500,1500,1500,1500,1500,1500,1500};
   int r = round(random(0,10));
-  Serial.println(r);
+  //Serial.println(r);
   return speeds[r];  
 }
 
