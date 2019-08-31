@@ -66,71 +66,25 @@ void Flipper::justGo(byte t) {
   _servo.write(_target);
 }
 
-void Flipper::flipOut(int s) {
-  setMove(_flipped, s);
+void Flipper::flipOut(byte t) {
+  cPos = _servo.read;
+  if (cPos < _flipped) {
+    _target = cPos - _steps
+  }
 }
 
 void Flipper::rest(int s) {
-  setMove(_rest, s);
+  
 }
 
-void Flipper::moveIt() {
-  _target = constrain(_target,_flipped,_rest);
-  Serial.println(_position);
-  Serial.println(_target);
-  if (_position < _target) {
-    _position += _steps;
-    _position = constrain(_position,_flipped,_rest);
-    _servo.write(_position);
-    delay(_speed);
-  } else if (_position > _target) {
-    _position -= _steps;
-    _position = constrain(_position,_flipped,_rest);
-    _servo.write(_position);
-    //delay(0);
-  }
-}/*
-void Flipper::moveIt(byte dir,int loc, int sp, int st) {
-  if (sp > 0) {
-    delay(sp);
-  }
-  if (dir == 0) { //moving to rest
-    flipper.write(min((loc+st),pos0)); //don't go past pos0
-  }
-  if (dir == 1) { //moving to flip
-    flipper.write(max((loc-10),pos1)); //don't go past pos-
+void Flipper::moveIt(unsigned long *cMillis) {
+  if ((cMillis - _startMillis) >= _nextMillis) {
+    //do stuff
+    _servo.write(constrain(_target,_flipped, _rest));
+    _startMillis = millis();
   }
 }
-/*
-void Flipper::moveIt(byte dir,int loc, int sp, int st) {
-  if (sp > 0) {
-    delay(sp);
-  }
-  if (dir == 0) { //moving to rest
-    flipper.write(min((loc+st),pos0)); //don't go past pos0
-  }
-  if (dir == 1) { //moving to flip
-    flipper.write(max((loc-10),pos1)); //don't go past pos-
-  }
-}
-*/
+
 /**************************************
  *   THE FUN STUFF
  **************************************/
-//Dance time?
-/*
-void wiggle(byte wiggles,byte center) {
-  byte i = 0;
-  for (i=0;i<wiggles;i++) {
-    flipOut(center+3);
-    delay(75);
-    flipOut(center-3);
-    delay(75);
-  }
-  rest();    //you're drunk, flipper, go home
-}
-*/
-void Flipper::watchingYou(byte _speed) {
-  justGo(_rest-((_rest-_flipped)/2));
-  setMove(_rest,_speed);
-}

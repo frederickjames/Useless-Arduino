@@ -33,10 +33,10 @@ currentMillis = millis();
 
 if (lastSwitchState != switchState) {
   if (switchState == LOW) {
-    flipper.flipOut(0);
+    flipper.flipOut(1);
   }
   if (switchState == HIGH) {
-    flipper.rest(0);
+    flipper.rest(1);
   }
 }
 
@@ -49,7 +49,7 @@ Serial.println(lastSwitchState);
 Serial.println(switchState);
 }
 /*******************************************
-***     END LOOP ***
+***     END LOOP     ***
 *******************************************/
 
 bool checkSwitch() {
@@ -65,15 +65,4 @@ int randomSpeed() {
   int r = round(random(0,10));
   //Serial.println(r);
   return speeds[r];  
-}
-
-//de bugs, de bugs!
-void writeSerial(String msg,byte dir,int loc, int sp, int st) {
-  Serial.println("===============================");
-  Serial.println(msg);
-  Serial.println(dir);
-  Serial.println(loc);
-  Serial.println(sp);
-  Serial.println(st);
-  Serial.println("===============================");
 }

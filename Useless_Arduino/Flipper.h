@@ -49,15 +49,21 @@ Each Action should have a next action (some dynamic some static)
     byte _rest;                       //position when hiding
     byte _flipped;                    //position for flipping the switch
     byte _steps;                      //how much I move each time
-  //information
-    bool _havingFun;                  //doing the fun stuff   ????
-    byte _position;                   //where I am
-  //basic function
+    unsigned long _startMillis;       //start counting the time
+    byte _nextMillis;                 //the next time I do something
     byte _target;                     //this is where I'm going next
-    byte _speed;                      //how long I wait between moves (lower = faster travel)
-  //fun Stuff
-    
-    
+    byte _currentAction;              //this is what I am doing (I should haave a table for this)
 };
+
+/***************************************************
+_target table
+
+00 -  nothing (go rest I guess?)
+01 -  flipout
+02 -  rest
+03 -  smash
+04 -  wiggle
+
+***************************************************/
 
 #endif
