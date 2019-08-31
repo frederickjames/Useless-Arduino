@@ -19,7 +19,6 @@ Flipper::Flipper(byte rest, byte flipped)
 
 void Flipper::setPin(byte pin) {
   _servo.attach(pin);
-  _position = _servo.read();
 }
 
 void Flipper::dataDump() {
@@ -33,21 +32,20 @@ void Flipper::dataDump() {
   Serial.println(_rest);
   Serial.println(_flipped);
   Serial.println(_steps);
-  Serial.println(_position);
+  Serial.println(_servo.read());
   Serial.println(_target);
-  Serial.println(_speed);
+  Serial.println(_waitTime);
   Serial.println("**********");
 }
 /**************************************
  *   INFORMATION
  **************************************/
 byte Flipper::getPos() {
-  _position = _servo.read();
-  return _position;
+
 }
 
 int Flipper::getSpeed() {
-  return _speed;
+//  return _speed;
 }
 
 /**************************************
@@ -55,10 +53,10 @@ int Flipper::getSpeed() {
  **************************************/
 void Flipper::setMove(byte t, int s) {
   _target = constrain(t,_flipped,_rest);
-  _speed = s;
+//  _speed = s;
 }
 void Flipper::setDelay(int s) {
-  _speed = s;
+
 }
 
 void Flipper::justGo(byte t) {
@@ -66,19 +64,32 @@ void Flipper::justGo(byte t) {
   _servo.write(_target);
 }
 
+//Sets the next move if I'm flipping out
 void Flipper::flipOut(byte t) {
-  cPos = _servo.read;
-  if (cPos < _flipped) {
-    _target = cPos - _steps
+  int cPos = _servo.read();
+  if (cPos > _flipped) {
+    _target = cPos - _steps;     //will handle going beyond _flipped in moveIt()
+    _startMillis = millis();
+    _waitTime = t;
+  } else {
+    _currentAction = 0;
   }
 }
 
-void Flipper::rest(int s) {
-  
+//Sets the next move if I'm going to rest
+void Flipper::rest(byte t) {
+  int cPos = _servo.read();
+  if (cPos < _rest) {
+    _target = cPos + _steps;     //will handle going beyond _flipped in moveIt()
+    _startMillis = millis();
+    _waitTime = t;
+  } else {
+    _currentAction = 0;
+  }
 }
 
 void Flipper::moveIt(unsigned long *cMillis) {
-  if ((cMillis - _startMillis) >= _nextMillis) {
+  if ((cMillis - _startMillis) >= _waitTime) {
     //do stuff
     _servo.write(constrain(_target,_flipped, _rest));
     _startMillis = millis();

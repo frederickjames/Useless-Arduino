@@ -18,12 +18,12 @@ class Flipper
     byte getPos();                        //where am I?
     int getSpeed();
   //basic function
-    void setMove(byte t,int s);       //where I am going
+    void setMove(byte t, int s);       //where I am going
     void setDelay(int s);             //independantly change the speed
     void justGo(byte t);
-    void flipOut(int s);
-    void rest(int s);
-    void moveIt();                    //moves to the desired _target with _speed
+    void flipOut(byte t);
+    void rest(byte t);
+    void moveIt(unsigned long *cMillis);                    //moves to the desired _target with _speed
 
   //fun things at rest
     void peak(int duration);
@@ -50,7 +50,7 @@ Each Action should have a next action (some dynamic some static)
     byte _flipped;                    //position for flipping the switch
     byte _steps;                      //how much I move each time
     unsigned long _startMillis;       //start counting the time
-    byte _nextMillis;                 //the next time I do something
+    byte _waitTime;                   //hoe long before I do something
     byte _target;                     //this is where I'm going next
     byte _currentAction;              //this is what I am doing (I should haave a table for this)
 };

@@ -31,16 +31,16 @@ void loop(){
 switchState = digitalRead(10);
 currentMillis = millis();
 
-if (lastSwitchState != switchState) {
+//if (lastSwitchState != switchState) {
   if (switchState == LOW) {
-    flipper.flipOut(1);
+    flipper.flipOut(15000);
   }
   if (switchState == HIGH) {
-    flipper.rest(1);
+    flipper.rest(0);
   }
-}
+//}
 
-flipper.moveIt();
+flipper.moveIt(&currentMillis);
 //flipper.dataDump();
 
 
