@@ -1,4 +1,6 @@
-#include <Servo.h> 
+#include <Arduino.h>
+#include <Servo.h>
+
 Servo servo_1; 
 int pos = 140; 
 int switchState; 
